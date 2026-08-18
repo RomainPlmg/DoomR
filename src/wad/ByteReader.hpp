@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <span>
@@ -31,4 +32,17 @@ inline uint16_t readU16(std::span<const std::byte> data, std::size_t offset) {
 
 inline int16_t readI16(std::span<const std::byte> data, std::size_t offset) {
     return static_cast<std::int16_t>(readU16(data, offset));
+}
+
+inline std::array<char, 8> readArray8(std::span<const std::byte> data, std::size_t offset) {
+    if (offset + 8 > data.size()) {
+        throw std::out_of_range("readArray8: offset out of bounds");
+    }
+
+    std::array<char, 8> name{};
+    for (size_t i = 0; i < 8; ++i) {
+        name[i] = static_cast<char>(data[offset + i]);
+    }
+
+    return name;
 }

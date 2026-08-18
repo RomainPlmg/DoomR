@@ -26,6 +26,7 @@ add_executable(DoomEngine
     src/platform/Window.cpp
     src/render/Framebuffer.cpp
     src/wad/WadFile.cpp
+    src/wad/WadDirectory.cpp
 )
 
 target_include_directories(DoomEngine PRIVATE ${PROJECT_SOURCE_DIR}/src/)

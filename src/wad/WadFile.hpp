@@ -4,6 +4,7 @@
 #include <expected>
 #include <filesystem>
 #include <memory>
+#include <span>
 #include <vector>
 
 #include "WadError.hpp"
@@ -11,6 +12,10 @@
 class WadFile {
    public:
     static std::expected<std::unique_ptr<WadFile>, WadError> open(const std::filesystem::path& path);
+
+    [[nodiscard]] std::span<const std::byte> data() const noexcept { return m_data; }
+    [[nodiscard]] uint32_t nbLumps() const noexcept { return m_nbLumps; }
+    [[nodiscard]] uint32_t infoTableOfs() const noexcept { return m_infoTableOfs; }
 
    private:
     WadFile() = default;
