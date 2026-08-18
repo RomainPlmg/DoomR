@@ -25,6 +25,7 @@ add_executable(DoomEngine
     src/core/Log.cpp
     src/platform/Window.cpp
     src/render/Framebuffer.cpp
+    src/wad/WadFile.cpp
 )
 
 target_include_directories(DoomEngine PRIVATE ${PROJECT_SOURCE_DIR}/src/)
@@ -41,6 +42,9 @@ FetchContent_Declare(
         GIT_PROGRESS TRUE
         SYSTEM
 )
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set(SDL_SHARED OFF CACHE BOOL "" FORCE)
+set(SDL_STATIC ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(sdl)
 
 # SpdLog
