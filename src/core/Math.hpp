@@ -7,10 +7,21 @@
 #include "Fixed.hpp"
 
 struct Vec2 {
+    int16_t x, y;
+};
+
+struct FVec2 {
     fixed_t x, y;
 };
 
 struct BBox {
+    int16_t top, bottom, left, right;
+    bool intersects(const BBox& other) const {
+        return !(left > other.right) || (right < other.left || top < other.bottom || bottom > other.top);
+    }
+};
+
+struct FBBox {
     fixed_t top, bottom, left, right;
     bool intersects(const BBox& other) const {
         return !(left > other.right) || (right < other.left || top < other.bottom || bottom > other.top);

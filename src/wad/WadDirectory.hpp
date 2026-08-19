@@ -20,7 +20,7 @@ class WadDirectory {
     WadDirectory(const WadFile& file);
 
     const WadDirEntry* find(std::string_view name) const;
-    std::optional<size_t> index(std::string_view name);
+    std::optional<size_t> index(std::string_view name) const;
 
     std::span<const WadDirEntry> entries() const { return m_entries; }
 

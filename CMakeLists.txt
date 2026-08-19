@@ -27,6 +27,9 @@ add_executable(DoomEngine
     src/render/Framebuffer.cpp
     src/wad/WadFile.cpp
     src/wad/WadDirectory.cpp
+    src/level/Map.cpp
+    src/render/TopDownRenderer.cpp
+    src/render/MapViewport.cpp
 )
 
 target_include_directories(DoomEngine PRIVATE ${PROJECT_SOURCE_DIR}/src/)

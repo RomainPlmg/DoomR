@@ -4,6 +4,8 @@
 #include <span>
 #include <vector>
 
+#include "RenderUtils.hpp"
+
 class Framebuffer {
    public:
     Framebuffer(int width, int height);
@@ -11,18 +13,18 @@ class Framebuffer {
     int width() const { return m_width; }
     int height() const { return m_height; }
 
-    void setPixel(int x, int y, uint8_t colorIdx);
-    uint8_t getPixel(int x, int y);
+    void setPixel(int x, int y, const Color& color);
+    Color getPixel(int x, int y);
 
-    void setColumn(int x, int yStart, int yEnd, uint8_t colorIdx);
+    void setColumn(int x, int yStart, int yEnd, const Color& color);
 
-    void clear(uint8_t colorIdx = 0);
+    void clear(const Color& color = {16, 16, 16, 255});
 
-    std::span<const uint8_t> data() const { return m_pixels; }
+    std::span<const Color> data() const { return m_pixels; }
 
    private:
     int m_width, m_height;
-    std::vector<uint8_t> m_pixels;
+    std::vector<Color> m_pixels;
 
     size_t index(int x, int y) const { return static_cast<size_t>(y) * m_width + x; }
 };

@@ -31,7 +31,7 @@ const WadDirEntry* WadDirectory::find(std::string_view name) const {
     return nullptr;
 }
 
-std::optional<size_t> WadDirectory::index(std::string_view name) {
+std::optional<size_t> WadDirectory::index(std::string_view name) const {
     for (size_t i = m_entries.size() - 1; i >= 0; i--) {
         if (nameToString(m_entries[i].name) == name) return i;
     }

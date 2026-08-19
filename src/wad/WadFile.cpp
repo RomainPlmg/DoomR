@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "ByteReader.hpp"
+#include "WadDirectory.hpp"
 
 std::expected<std::unique_ptr<WadFile>, WadError> WadFile::open(const std::filesystem::path& path) {
     std::ifstream file(path, std::ios::binary | std::ios::ate);
@@ -34,4 +35,8 @@ std::expected<std::unique_ptr<WadFile>, WadError> WadFile::open(const std::files
     if (tableEnd > static_cast<uint64_t>(fileSize)) return std::unexpected(WadError::CorruptDirectory);
 
     return wad;
+}
+
+std::span<const std::byte> WadFile::readLump(const WadDirEntry& entry) const {
+    return std::span(m_data).subspan(entry.filePos, entry.size);
 }

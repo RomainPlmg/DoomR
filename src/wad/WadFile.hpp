@@ -9,9 +9,13 @@
 
 #include "WadError.hpp"
 
+struct WadDirEntry;
+
 class WadFile {
    public:
     static std::expected<std::unique_ptr<WadFile>, WadError> open(const std::filesystem::path& path);
+
+    std::span<const std::byte> readLump(const WadDirEntry& entry) const;
 
     [[nodiscard]] std::span<const std::byte> data() const noexcept { return m_data; }
     [[nodiscard]] uint32_t nbLumps() const noexcept { return m_nbLumps; }

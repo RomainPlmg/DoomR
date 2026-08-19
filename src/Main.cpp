@@ -1,35 +1,42 @@
 #include "core/Log.hpp"
+#include "level/Map.hpp"
 #include "platform/Window.hpp"
 #include "render/Framebuffer.hpp"
+#include "render/MapViewport.hpp"
+#include "render/TopDownRenderer.hpp"
 #include "wad/WadDirectory.hpp"
 #include "wad/WadFile.hpp"
 
 int main(void) {
+    // Init logger
     logger::init();
     logger::setLevel(logger::Level::Trace);
 
+    // Create window, framebuffer and renderer
     Window window;
     Framebuffer fb(320, 200);
+    TopDownRenderer renderer;
 
+    // Open the WAD file
     auto result = WadFile::open("../doom.wad");
-
     if (!result) {
         LOG_ERROR("Cannot load WAD: {}", toString(result.error()));
         return EXIT_FAILURE;
     }
     auto& wad = *result;
 
+    // Parse the WAD & read the map E1M1
     WadDirectory wadDir(*wad);
-    LOG_INFO("E1M1 is at index {}", wadDir.index("E1M1").value());
+    auto map = Map::load(*wad, wadDir, "E1M1");
+
+    MapViewport viewport(320, 200, map->computeBoundingBox());
 
     uint8_t offset = 0;
     while (!window.shouldClose()) {
         window.pollEvents();
 
-        for (int y = 0; y < fb.height(); ++y) {
-            for (int x = 0; x < fb.width(); ++x) {
-                fb.setPixel(x, y, static_cast<uint8_t>(x + offset + y));
-            }
+        for (const auto& v : map->vertexes()) {
+            renderer.drawPoint(fb, viewport.worldToScreen({v.x, v.y}), {255, 0, 0, 255});
         }
         offset++;
 

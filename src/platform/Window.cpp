@@ -1,5 +1,6 @@
 #include "Window.hpp"
 
+#include <cassert>
 #include <cstdlib>
 
 #include "core/Log.hpp"
@@ -48,12 +49,13 @@ void Window::pollEvents() {
 }
 
 void Window::present(const Framebuffer& fb) {
+    assert(fb.width() <= m_props.width && fb.height() <= m_props.height);
+
     auto pixels = fb.data();
 
     for (size_t i = 0; i < pixels.size(); ++i) {
-        uint8_t v = pixels[i];
-        // TODO: Temporary, color index is grayscale for now
-        m_buffer[i] = (v << 24) | (v << 16) | (v << 8) | 0xFF;
+        auto& c = pixels[i];
+        m_buffer[i] = (c.r << 24) | (c.g << 16) | (c.b << 8) | c.a;
     }
 
     SDL_UpdateTexture(m_texture, nullptr, m_buffer.data(), m_props.width * sizeof(uint32_t));
