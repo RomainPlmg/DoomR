@@ -4,10 +4,9 @@
 #include <cstdlib>
 
 #include "core/Log.hpp"
-#include "render/Framebuffer.hpp"
 
 Window::Window(const WindowProperties& props) {
-    m_window = SDL_CreateWindow(props.title.c_str(), props.width * props.scale, props.height * props.scale,
+    m_window = SDL_CreateWindow(props.title.c_str(), props.width, props.height,
                                 SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
     if (!m_window) {
         LOG_FATAL("{}", SDL_GetError());
@@ -20,21 +19,10 @@ Window::Window(const WindowProperties& props) {
         std::abort();
     }
 
-    m_texture =
-        SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, props.width, props.height);
-    if (!m_texture) {
-        LOG_FATAL("{}", SDL_GetError());
-        std::abort();
-    }
-    SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
-
-    m_buffer.resize(props.width * props.height);
-
     LOG_DEBUG("Window init successful!");
 }
 
 Window::~Window() {
-    if (m_texture) SDL_DestroyTexture(m_texture);
     if (m_renderer) SDL_DestroyRenderer(m_renderer);
     if (m_window) SDL_DestroyWindow(m_window);
 
@@ -46,21 +34,4 @@ void Window::pollEvents() {
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_EVENT_QUIT) m_open = false;
     }
-}
-
-void Window::present(const Framebuffer& fb) {
-    assert(fb.width() <= m_props.width && fb.height() <= m_props.height);
-
-    auto pixels = fb.data();
-
-    for (size_t i = 0; i < pixels.size(); ++i) {
-        auto& c = pixels[i];
-        m_buffer[i] = (c.r << 24) | (c.g << 16) | (c.b << 8) | c.a;
-    }
-
-    SDL_UpdateTexture(m_texture, nullptr, m_buffer.data(), m_props.width * sizeof(uint32_t));
-
-    SDL_RenderClear(m_renderer);
-    SDL_RenderTexture(m_renderer, m_texture, nullptr, nullptr);
-    SDL_RenderPresent(m_renderer);
 }
