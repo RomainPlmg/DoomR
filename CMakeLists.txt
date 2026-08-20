@@ -34,6 +34,7 @@ add_executable(DoomEngine
     src/wad/Palette.cpp
     src/level/Player.cpp
     src/level/World.cpp
+    src/core/Timer.cpp
 )
 
 target_include_directories(DoomEngine PRIVATE ${PROJECT_SOURCE_DIR}/src/)

@@ -1,9 +1,10 @@
 #include "World.hpp"
 
+#include "core/Angle.hpp"
 #include "platform/Input.hpp"
 
-constexpr int MOVE_SPEED = 4;
-constexpr angle_t ROT_SPEED = degToAngle(0.1);
+constexpr int MOVE_SPEED = 200;
+constexpr angle_t ROT_SPEED = degToAngle(8);
 
 World::World(std::unique_ptr<Map> map) : m_map(std::move(map)) {
     // Get player start position and angle
@@ -21,10 +22,10 @@ World::World(std::unique_ptr<Map> map) : m_map(std::move(map)) {
 }
 
 void World::update(const InputState& input, float dt) {
-    if (input.forward) m_player->moveForward(IntToFixed(MOVE_SPEED));
-    if (input.backward) m_player->moveForward(IntToFixed(-MOVE_SPEED));
-    if (input.strafeLeft) m_player->strafe(IntToFixed(-MOVE_SPEED));
-    if (input.strafeRight) m_player->strafe(IntToFixed(MOVE_SPEED));
-    if (input.turnLeft) m_player->rotate(ANG1 * 2);
-    if (input.turnRight) m_player->rotate(-(ANG1 * 2));
+    if (input.forward) m_player->moveForward(IntToFixed(MOVE_SPEED * dt));
+    if (input.backward) m_player->moveForward(IntToFixed(-MOVE_SPEED * dt));
+    if (input.strafeLeft) m_player->strafe(IntToFixed(-MOVE_SPEED * dt));
+    if (input.strafeRight) m_player->strafe(IntToFixed(MOVE_SPEED * dt));
+    if (input.turnLeft) m_player->rotate(static_cast<angle_t>(ROT_SPEED * dt));
+    if (input.turnRight) m_player->rotate(-static_cast<angle_t>(ROT_SPEED * dt));
 }

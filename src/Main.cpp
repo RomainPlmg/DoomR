@@ -1,6 +1,7 @@
 #include "core/Fixed.hpp"
 #include "core/Log.hpp"
 #include "core/Math.hpp"
+#include "core/Timer.hpp"
 #include "level/World.hpp"
 #include "platform/Display.hpp"
 #include "platform/Input.hpp"
@@ -25,6 +26,7 @@ int main(void) {
     TopDownRenderer renderer;
     Display display(window.renderer(), fb);
     Input input;
+    Timer timer;
 
     // Open the WAD file
     auto result = WadFile::open("../Doom-ud.wad");
@@ -46,9 +48,10 @@ int main(void) {
     MapViewport viewport(fb.width(), fb.height(), world.map()->computeBoundingBox());
 
     while (!window.shouldClose()) {
+        timer.tick();
         window.pollEvents();
 
-        world.update(input.poll(), 0.f);
+        world.update(input.poll(), timer.delta());
 
         fb.clear();
 
