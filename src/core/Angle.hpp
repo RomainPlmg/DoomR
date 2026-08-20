@@ -16,4 +16,4 @@ constexpr float angleToRad(angle_t a) {
     return (a / static_cast<float>(std::numeric_limits<uint32_t>::max()) * static_cast<float>(2.0 * std::numbers::pi));
 }
 
-constexpr angle_t degToAngle(int a) { return static_cast<angle_t>(a * 0x0B60B60BUL); }
+constexpr angle_t degToAngle(float a) { return static_cast<angle_t>(a * static_cast<float>(0x0B60B60B)); }

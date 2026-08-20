@@ -11,7 +11,7 @@
 #include "wad/WadFile.hpp"
 
 const int MOVE_SPEED = 4;
-const angle_t ROT_SPEED = degToAngle(2);
+const angle_t ROT_SPEED = degToAngle(0.3);
 
 int main(void) {
     // Init logger
@@ -29,7 +29,7 @@ int main(void) {
     Display display(window.renderer(), fb);
 
     // Open the WAD file
-    auto result = WadFile::open("../doom.wad");
+    auto result = WadFile::open("../Doom-ud.wad");
     if (!result) {
         LOG_ERROR("Cannot load WAD: {}", toString(result.error()));
         return EXIT_FAILURE;
@@ -65,8 +65,8 @@ int main(void) {
 
         if (keys[SDL_SCANCODE_W]) player.moveForward(IntToFixed(MOVE_SPEED));
         if (keys[SDL_SCANCODE_S]) player.moveForward(IntToFixed(-MOVE_SPEED));
-        if (keys[SDL_SCANCODE_A]) player.strafe(IntToFixed(MOVE_SPEED));
-        if (keys[SDL_SCANCODE_D]) player.strafe(IntToFixed(-MOVE_SPEED));
+        if (keys[SDL_SCANCODE_A]) player.strafe(IntToFixed(-MOVE_SPEED));
+        if (keys[SDL_SCANCODE_D]) player.strafe(IntToFixed(MOVE_SPEED));
         if (keys[SDL_SCANCODE_LEFT]) player.rotate(ROT_SPEED);
         if (keys[SDL_SCANCODE_RIGHT]) player.rotate(-ROT_SPEED);
 
