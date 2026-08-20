@@ -1,4 +1,6 @@
+#include "core/Fixed.hpp"
 #include "core/Log.hpp"
+#include "core/Math.hpp"
 #include "level/World.hpp"
 #include "platform/Display.hpp"
 #include "platform/Input.hpp"
@@ -59,10 +61,22 @@ int main(void) {
         }
 
         // Draw the player
-        renderer.drawPoint(fb,
-                           viewport.worldToScreen(
-                               {FixedToInt(world.player()->position().x), FixedToInt(world.player()->position().y)}),
-                           251);
+        Point dirPoint = {
+            FixedToInt(world.player()->position().x +
+                       FixedMul(angleCos(world.player()->angle() + ANG90), IntToFixed(128))),
+            FixedToInt(world.player()->position().y +
+                       FixedMul(angleSin(world.player()->angle() + ANG90), IntToFixed(128))),
+        };
+
+        renderer.drawLine(fb,
+                          viewport.worldToScreen(
+                              {FixedToInt(world.player()->position().x), FixedToInt(world.player()->position().y)}),
+                          viewport.worldToScreen({dirPoint.x, dirPoint.y}), 251);
+
+        renderer.drawFilledCircle(fb,
+                                  viewport.worldToScreen({FixedToInt(world.player()->position().x),
+                                                          FixedToInt(world.player()->position().y)}),
+                                  4, 251);
 
         // Print on the screen
         display.present(fb, *palette);

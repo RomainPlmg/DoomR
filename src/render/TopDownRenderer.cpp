@@ -33,3 +33,13 @@ void TopDownRenderer::drawLine(Framebuffer& fb, const Point& p1, const Point& p2
         y += yIncr;
     }
 }
+
+void TopDownRenderer::drawFilledCircle(Framebuffer& fb, const Point& center, int radius, uint8_t colorIdx) {
+    for (int32_t y = -radius; y <= radius; ++y) {
+        for (int32_t x = -radius; x <= radius; ++x) {
+            if (x * x + y * y <= radius * radius) {
+                drawPoint(fb, {center.x + x, center.y + y}, colorIdx);
+            }
+        }
+    }
+}

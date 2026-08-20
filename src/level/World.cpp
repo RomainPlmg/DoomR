@@ -3,7 +3,7 @@
 #include "platform/Input.hpp"
 
 constexpr int MOVE_SPEED = 4;
-constexpr angle_t ROT_SPEED = degToAngle(0.3);
+constexpr angle_t ROT_SPEED = degToAngle(0.1);
 
 World::World(std::unique_ptr<Map> map) : m_map(std::move(map)) {
     // Get player start position and angle
