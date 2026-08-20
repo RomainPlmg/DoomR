@@ -46,8 +46,6 @@ Display::~Display() {
 }
 
 void Display::present(const Framebuffer& fb, const Palette& palette) {
-    assert(fb.width() <= m_width && fb.height() <= m_height);
-
     auto pixels = fb.data();
 
     for (size_t i = 0; i < pixels.size(); ++i) {

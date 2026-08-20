@@ -44,8 +44,11 @@ int main(void) {
     while (!window.shouldClose()) {
         window.pollEvents();
 
-        for (const auto& v : map->vertexes()) {
-            renderer.drawPoint(fb, viewport.worldToScreen({v.x, v.y}), 255);
+        for (const auto& line : map->linedefs()) {
+            Vertex v1 = map->vertexes()[line.startVertex];
+            Vertex v2 = map->vertexes()[line.endVertex];
+
+            renderer.drawLine(fb, viewport.worldToScreen({v1.x, v1.y}), viewport.worldToScreen({v2.x, v2.y}), 255);
         }
         offset++;
 

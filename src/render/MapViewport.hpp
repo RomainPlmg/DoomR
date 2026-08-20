@@ -10,7 +10,8 @@ class MapViewport {
     Point worldToScreen(const Vec2& point) const;
 
    private:
-    float m_scaleX, m_scaleY;
+    float m_scale;
     Vec2 m_worldOrigin;
     uint32_t m_screenWidth, m_screenHeight;
+    int m_offsetX, m_offsetY;
 };
