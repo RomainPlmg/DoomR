@@ -33,6 +33,7 @@ add_executable(DoomEngine
     src/platform/Display.cpp
     src/wad/Palette.cpp
     src/level/Player.cpp
+    src/level/World.cpp
 )
 
 target_include_directories(DoomEngine PRIVATE ${PROJECT_SOURCE_DIR}/src/)
