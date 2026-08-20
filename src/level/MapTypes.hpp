@@ -46,7 +46,7 @@ enum LinedefFlag : uint16_t {
 struct Thing {
     int16_t x;
     int16_t y;
-    uint16_t angle;
+    int16_t angle;
     DoomEdThing type;
     ThingFlag flags;
 };
