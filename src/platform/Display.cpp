@@ -4,6 +4,7 @@
 
 #include "core/Log.hpp"
 #include "render/Framebuffer.hpp"
+#include "wad/Palette.hpp"
 
 static SDL_FRect computeDestRect(int windowWidth, int windowHeight, int textureWidth, int textureHeight) {
     const float windowAspect = static_cast<float>(windowWidth) / windowHeight;
@@ -50,8 +51,7 @@ void Display::present(const Framebuffer& fb, const Palette& palette) {
 
     for (size_t i = 0; i < pixels.size(); ++i) {
         auto v = pixels[i];
-        Color c{v, v, v, 255};  // TODO: Real palette
-        m_buffer[i] = std::bit_cast<uint32_t>(c);
+        m_buffer[i] = std::bit_cast<uint32_t>(palette.colorAt(v));
     }
 
     SDL_UpdateTexture(m_texture, nullptr, m_buffer.data(), m_width * sizeof(uint32_t));

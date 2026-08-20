@@ -35,12 +35,15 @@ int main(void) {
     // Parse the WAD & read the map E1M1
     WadDirectory wadDir(*wad);
     auto map = Map::load(*wad, wadDir, "E1M1");
+    auto palette = Palette::load(*wad, wadDir);
+
+    Vec2 playerPos{};
+    for (const auto& t : map->things()) {
+        if (t.type == DoomEdThing::Player1StartPos) playerPos = {t.x, t.y};
+    }
 
     MapViewport viewport(fb.width(), fb.height(), map->computeBoundingBox());
 
-    Palette p;
-
-    uint8_t offset = 0;
     while (!window.shouldClose()) {
         window.pollEvents();
 
@@ -48,11 +51,11 @@ int main(void) {
             Vertex v1 = map->vertexes()[line.startVertex];
             Vertex v2 = map->vertexes()[line.endVertex];
 
-            renderer.drawLine(fb, viewport.worldToScreen({v1.x, v1.y}), viewport.worldToScreen({v2.x, v2.y}), 255);
+            renderer.drawLine(fb, viewport.worldToScreen({v1.x, v1.y}), viewport.worldToScreen({v2.x, v2.y}), 4);
         }
-        offset++;
+        renderer.drawPoint(fb, viewport.worldToScreen(playerPos), 251);
 
-        display.present(fb, p);
+        display.present(fb, *palette);
 
         SDL_Delay(16);
     }

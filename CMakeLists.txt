@@ -31,6 +31,7 @@ add_executable(DoomEngine
     src/render/TopDownRenderer.cpp
     src/render/MapViewport.cpp
     src/platform/Display.cpp
+    src/wad/Palette.cpp
 )
 
 target_include_directories(DoomEngine PRIVATE ${PROJECT_SOURCE_DIR}/src/)
